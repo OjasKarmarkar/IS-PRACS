@@ -1,23 +1,23 @@
-key = input("Enter the key : ")
-pt = input("Enter the pt : ").replace(' ' , '')
-
-pt = list(pt)
-og = list(key)
-s = sorted(key)
-
 order = []
-rows = len(pt)//len(key) if len(pt)%len(key)==0 else (len(pt)//len(key))+1
-matrix = [ [] for _ in range(rows) ]
-
-for i in range(len(key)):
-        order.append(og.index(s[i]))
-        og[og.index(s[i])]="#"
-
 col_empty = []
 
 
-def encrypt(matrix , key , order):
+def encrypt(pt, key , order):
+    pt = list(pt)
+    og = list(key)
+    s = sorted(key)
+    order.clear()
+    col_empty.clear()
+
+    for i in range(len(key)):
+        order.append(og.index(s[i]))
+        og[og.index(s[i])]="#"
+
+    rows = len(pt)//len(key) if len(pt)%len(key)==0 else (len(pt)//len(key))+1
+    matrix = [ [] for _ in range(rows) ]
+
     k=0
+
     for i in range(rows):
         for j in range(len(key)):
             if k<len(pt):
@@ -39,7 +39,14 @@ def encrypt(matrix , key , order):
     print("Encrypted text is " + ct)
     return ct
 
-def decrypt(ct):
+def decrypt(ct , key , order):
+    order.clear()
+    og = list(key)
+    s = sorted(key)
+    rows = len(ct)//len(key) if len(ct)%len(key)==0 else (len(ct)//len(key))+1
+    for i in range(len(key)):
+        order.append(og.index(s[i]))
+        og[og.index(s[i])]="#"
     matrix = [ ['' for i in range(len(key))] for _ in range(rows) ]
     str_ix = 0
     for i in range(len(order)):
@@ -63,6 +70,12 @@ def decrypt(ct):
     print("Decrypted text is : " + pt)
     return pt
 
-ct = encrypt(matrix , key , order)
-pt = decrypt(ct)
-print(pt)
+key = input("Enter the key : ")
+pt = input("Enter the pt : ").replace(' ' , '')
+
+ct = encrypt(pt , key , order)
+key2 = input("Enter the key 2 : ")
+ct2 = encrypt(ct , key2 , order)
+
+ct1 = decrypt(ct2 , key2 , order)
+ct = decrypt(ct1 , key , order)
