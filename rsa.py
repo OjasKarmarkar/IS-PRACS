@@ -33,6 +33,8 @@ def nearestPrime(n,x):
 
 
 def rsa(pt):
+    print("Value of p is : " + str(p))
+    print("Value of q is : " + str(q))
     n = p*q
     phi = (p-1)*(q-1)
     e = 0
@@ -40,11 +42,14 @@ def rsa(pt):
     if pt>phi:
         pt = pt % phi
 
+    print("final pt after mod : " + str(pt))
+
     for i in range(2,phi):
         if (gcd(i,phi)==1 and i!=q and i!=p):
             e = i
             break
 
+    print("Value of e is : " + str(e))
     i=1
     while True:
         if (i*e)%phi==1 and i!=e:
@@ -52,8 +57,12 @@ def rsa(pt):
             break
         i+=1
 
+    print("Value of d is : " + str(d))
+
     ct = pow(pt,e,n)
+    print("Encrypted text is : " + str(ct))
     pt = pow(ct,d,n)
+    print("Decrypted text is : " + str(pt))
     return ct
 
 
@@ -63,4 +72,4 @@ p = nearestPrime(len(p),0)
 q = nearestPrime(len(q),p)
 
 pt = int(input("Enter numerical input : "))
-print(rsa(pt))
+rsa(pt)
